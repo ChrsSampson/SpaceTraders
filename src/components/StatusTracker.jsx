@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import { APIContext } from '../context/ApiProvider';
+import {RiSpaceShipFill} from  'react-icons/ri'
+import {MdOutlineSupportAgent} from 'react-icons/md'
 
 // gets the status of the API and render a component based on the status
 
@@ -90,20 +92,26 @@ export default function StatusTracker() {
         <div 
             style={{
                 display: 'flex', 
-                flexDirection: 'column', 
                 alignContent: 'center',
+                alignItems: 'center',
                 justifyContent: 'center',
                 border: '1px solid white',
-                borderRadius: '.5em'
+                borderRadius: '.5em',
+                padding: '1em'
             }}
         >
-            <h4
+            <p
                 style={{display: 'flex', alignItems: 'center', gap: '.25em', width: '100%'}}
             >
                 Status: {res.status ? 'Online' : 'Offline'} {statusDot}
-            </h4>
-            <h4>Agents Online: {res.stats ? res.stats.agents : '?'}</h4>
-            <h4>Active Ships: {res.stats ? res.stats.ships : '?'} </h4>
+            </p>
+            <div style={{
+                display:'flex',
+                gap: '1em'
+            }}>
+                <sub><MdOutlineSupportAgent /> {res.stats ? res.stats.agents : '?'}</sub>
+                <sub><RiSpaceShipFill /> {res.stats ? res.stats.ships : '?'} </sub>
+            </div>
         </div>
     )
 }

@@ -1,8 +1,6 @@
 // create a new Agent 
 import { useState, useContext } from "react"
-
 import { APIContext } from "../context/ApiProvider"
-
 
 // you cannot just make any faction. It must be one of these
 // COSMIC
@@ -13,7 +11,7 @@ import { APIContext } from "../context/ApiProvider"
 
 export default function CreateNewAgent () {
 
-    const {api, setToken} = useContext(APIContext)
+    const {api, setPlayer} = useContext(APIContext)
 
     const [agent, setAgent] = useState('')
     const [faction, setFaction] = useState('')
@@ -44,10 +42,14 @@ export default function CreateNewAgent () {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            console.log(data.error.code)
             if(data.error.code === 422){
                 activateErrorHilighting(data.error)
                 setError(displayError(data.error))
+            } 
+            if(data.token) {
+                saveTokenToStorage(data.token)
+                setPlayer(data)
             }
         })
         .catch(err => {
@@ -56,12 +58,16 @@ export default function CreateNewAgent () {
 
     }
 
+    function saveTokenToStorage (token) {
+        localStorage.setItem('spaceTradersToken', token)
+    }
+
     function displayError (res) {
 
         const el = []
 
         Object.values(res.data).forEach(e => {
-            const item = <span>{e}</span>
+            const item = <span key={e}>{e}</span>
             el.push(item)
         })
         
@@ -91,19 +97,31 @@ export default function CreateNewAgent () {
                 onSubmit={(e) => handleSubmit(e)}
             >
                 <span>Create New Agent</span>
-                {error && <p style={{color:'red'}}>{error}</p> }
+
+                {error &&
+                    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                        <p style={{color:'red'}}>{error}</p> 
+                    </div>
+                }
                 <input
                     placeholder="Agent Name (symbol)" 
                     style={{borderColor: symbolInputError ? 'red' : null}}
                     value={agent}
                     onChange={(e) => setAgent(e.target.value) }
                 />
-                <input
+                <select
                     placeholder="Faction"
                     style={{borderColor: factionInputError ? 'red' : null}}
                     value={faction}
                     onChange={(e) => setFaction(e.target.value) }
-                />
+                >
+                    <option value=''>Select Faction</option>
+                    <option value='COSMIC'>COSMIC</option>
+                    <option value="VOID">VOID</option>
+                    <option value="GALACTIC">GALACTIC</option>
+                    <option value="QUANTUM">QUANTUM</option>
+                    <option value="DOMINION">DOMINION</option>
+                </select>
                 <button type="submit" >Create</button>
             </form>
         </>

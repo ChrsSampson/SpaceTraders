@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useEffect } from 'react';
 import { useState } from 'react';
 
 
@@ -8,12 +8,31 @@ const APIContext = createContext()
 
 function APIProvider ({children}) {
 
-  const [token, setToken] = useState('')
+  const [player, setPlayer] = useState('')
+
+  useEffect(() => {
+    const token = localStorage.getItem('spaceTradersToken')
+    if(token) {
+      // look up the player
+      fetch('https://api.spacetraders.io/v2/my/agent', {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      .then(res => res.json)
+      .then(data => {
+        setPlayer(data)
+      })
+      .catch(err => console.log(err))
+    }
+  }, [])
 
   let data = {
     api: 'https://api.spacetraders.io/v2/',
-    token: token,
-    setToken: setToken
+    player: player,
+    setPlayer: setPlayer
   }
 
     return (
