@@ -1,17 +1,16 @@
 import { useContext, useState } from "react"
 import { APIContext } from "../context/ApiProvider"
-
 // todo: localStorage hook 
 
 export default function EnterAgentToken() {
     
-    const {player} = useContext(APIContext)
+    const {player, setToken} = useContext(APIContext)
 
-    const [token, setToken] = useState('')
+    const [token, setT] = useState('')
     
     function handleSubmit (e) {
         e.preventDefault()
-        localStorage.setItem('spaceTradersToken', token)
+        setToken(token)
     }
 
     if(!player) {
@@ -27,7 +26,7 @@ export default function EnterAgentToken() {
                 }}
             >
                 <label htmlFor="token">Enter Agent Token</label>
-                <input value={token} onChange={e => setToken(e.target.value)} type="text" name="token" id="token" />
+                <input value={token} onChange={e => setT(e.target.value)} type="text" name="token" id="token" />
                 <button type="submit">Submit</button>
             </form>
         )

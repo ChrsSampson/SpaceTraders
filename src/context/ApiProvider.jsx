@@ -1,5 +1,6 @@
 import { createContext, useEffect } from 'react';
 import { useState } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 // todo: localStorage hook
 
@@ -9,9 +10,10 @@ const APIContext = createContext()
 function APIProvider ({children}) {
 
   const [player, setPlayer] = useState('')
+  const [token, setToken] = useLocalStorage('spaceTradersToken', '')
 
   useEffect(() => {
-    const token = localStorage.getItem('spaceTradersToken')
+    console.log(token)
     if(token) {
       // look up the player
        const data = fetch('https://api.spacetraders.io/v2/my/agent', {
@@ -23,20 +25,25 @@ function APIProvider ({children}) {
       })
       .then(res => res.json())
       .then(data => {
+
         console.log(data)
+        setToken(data.token)
         setPlayer(data.data)
       })
       .catch(err => {
+        setToken(null)
+        setError(err.message)
         console.log(err)
       }) 
 
     }
-  }, [])
+  }, [token])
 
   let data = {
     api: 'https://api.spacetraders.io/v2/',
     player: player,
-    setPlayer: setPlayer
+    setPlayer: setPlayer,
+    setToken: setToken,
   }
 
     return (
