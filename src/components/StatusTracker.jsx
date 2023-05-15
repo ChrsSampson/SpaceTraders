@@ -79,7 +79,7 @@ export default function StatusTracker() {
             })
     }, [api])
 
-    const statusDot = <div 
+    const statusDot = <span
                         style={{
                             height: '10px',
                             width: '10px', 

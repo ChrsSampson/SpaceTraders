@@ -1,10 +1,10 @@
 import { createContext, useEffect } from 'react';
 import { useState } from 'react';
 
+// todo: localStorage hook
 
 // contect APIProvider for the API
 const APIContext = createContext()
-
 
 function APIProvider ({children}) {
 
@@ -14,18 +14,22 @@ function APIProvider ({children}) {
     const token = localStorage.getItem('spaceTradersToken')
     if(token) {
       // look up the player
-      fetch('https://api.spacetraders.io/v2/my/agent', {
+       const data = fetch('https://api.spacetraders.io/v2/my/agent', {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         }
       })
-      .then(res => res.json)
+      .then(res => res.json())
       .then(data => {
-        setPlayer(data)
+        console.log(data)
+        setPlayer(data.data)
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+      }) 
+
     }
   }, [])
 

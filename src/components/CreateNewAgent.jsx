@@ -11,7 +11,7 @@ import { APIContext } from "../context/ApiProvider"
 
 export default function CreateNewAgent () {
 
-    const {api, setPlayer} = useContext(APIContext)
+    const {api, player, setPlayer} = useContext(APIContext)
 
     const [agent, setAgent] = useState('')
     const [faction, setFaction] = useState('')
@@ -42,8 +42,8 @@ export default function CreateNewAgent () {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.error.code)
-            if(data.error.code === 422){
+            console.log(data)
+            if(data.error && data.error.code === 422){
                 activateErrorHilighting(data.error)
                 setError(displayError(data.error))
             } 
@@ -54,6 +54,7 @@ export default function CreateNewAgent () {
         })
         .catch(err => {
             setError(err.message)
+            console.log(err)
         })
 
     }
@@ -83,47 +84,49 @@ export default function CreateNewAgent () {
         }
     }
 
-    return (
-        <>
-            <form
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1em',
-                    border: '1px solid white',
-                    padding: '1em',
-                    borderRadius: '.5em'
-                }}
-                onSubmit={(e) => handleSubmit(e)}
-            >
-                <span>Create New Agent</span>
-
-                {error &&
-                    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                        <p style={{color:'red'}}>{error}</p> 
-                    </div>
-                }
-                <input
-                    placeholder="Agent Name (symbol)" 
-                    style={{borderColor: symbolInputError ? 'red' : null}}
-                    value={agent}
-                    onChange={(e) => setAgent(e.target.value) }
-                />
-                <select
-                    placeholder="Faction"
-                    style={{borderColor: factionInputError ? 'red' : null}}
-                    value={faction}
-                    onChange={(e) => setFaction(e.target.value) }
+    if(!player){
+        return (
+            <>
+                <form
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1em',
+                        border: '1px solid white',
+                        padding: '1em',
+                        borderRadius: '.5em'
+                    }}
+                    onSubmit={(e) => handleSubmit(e)}
                 >
-                    <option value=''>Select Faction</option>
-                    <option value='COSMIC'>COSMIC</option>
-                    <option value="VOID">VOID</option>
-                    <option value="GALACTIC">GALACTIC</option>
-                    <option value="QUANTUM">QUANTUM</option>
-                    <option value="DOMINION">DOMINION</option>
-                </select>
-                <button type="submit" >Create</button>
-            </form>
-        </>
-    )
+                    <span>Create New Agent</span>
+
+                    {error &&
+                        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                            <p style={{color:'red'}}>{error}</p> 
+                        </div>
+                    }
+                    <input
+                        placeholder="Agent Name (symbol)" 
+                        style={{borderColor: symbolInputError ? 'red' : null}}
+                        value={agent}
+                        onChange={(e) => setAgent(e.target.value) }
+                    />
+                    <select
+                        placeholder="Faction"
+                        style={{borderColor: factionInputError ? 'red' : null}}
+                        value={faction}
+                        onChange={(e) => setFaction(e.target.value) }
+                    >
+                        <option value=''>Select Faction</option>
+                        <option value='COSMIC'>COSMIC</option>
+                        <option value="VOID">VOID</option>
+                        <option value="GALACTIC">GALACTIC</option>
+                        <option value="QUANTUM">QUANTUM</option>
+                        <option value="DOMINION">DOMINION</option>
+                    </select>
+                    <button type="submit" >Create</button>
+                </form>
+            </>
+        )
+    }
 }

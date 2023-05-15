@@ -1,17 +1,23 @@
-import { useState, createContext } from 'react'
 import './App.css'
-import axios from 'axios'
 import {APIProvider} from './context/ApiProvider'
-import StatusTracker from './components/StatusTracker'
-import CreateNewAgent from './components/CreateNewAgent'
+import NavBar from './components/NavBar'
+
 
 function App() {
 
   return (
     <>
       <APIProvider>
-        <StatusTracker />
-        <CreateNewAgent />
+        <NavBar />
+        <section>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          }}> 
+    
+          </div>
+        </section>
       </APIProvider>
     </>
   )
