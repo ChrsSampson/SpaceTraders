@@ -20,13 +20,12 @@ export default function EnterAgentToken() {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1em',
-                    border: '1px solid white',
                     padding: '1em',
                     borderRadius: '.5em'
                 }}
             >
                 <label htmlFor="token">Enter Agent Token</label>
-                <input value={token} onChange={e => setT(e.target.value)} type="text" name="token" id="token" />
+                <input placeholder="Your Token" value={token} onChange={e => setT(e.target.value)} type="text" name="token" id="token" />
                 <button type="submit">Submit</button>
             </form>
         )

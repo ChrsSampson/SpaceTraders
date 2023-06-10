@@ -11,7 +11,7 @@ import { APIContext } from "../context/ApiProvider"
 
 export default function CreateNewAgent () {
 
-    const {api, player, setPlayer} = useContext(APIContext)
+    const {api, player, setPlayer, setToken} = useContext(APIContext)
 
     const [agent, setAgent] = useState('')
     const [faction, setFaction] = useState('')
@@ -92,7 +92,6 @@ export default function CreateNewAgent () {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '1em',
-                        border: '1px solid white',
                         padding: '1em',
                         borderRadius: '.5em'
                     }}

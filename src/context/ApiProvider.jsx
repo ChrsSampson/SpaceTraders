@@ -11,10 +11,10 @@ function APIProvider ({children}) {
 
   const [player, setPlayer] = useState('')
   const [token, setToken] = useLocalStorage('spaceTradersToken', '')
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    console.log(token)
-    if(token) {
+    if(token !== undefined && token !== null && token !== '') {
       // look up the player
        const data = fetch('https://api.spacetraders.io/v2/my/agent', {
         method: 'GET',
@@ -24,16 +24,13 @@ function APIProvider ({children}) {
         }
       })
       .then(res => res.json())
-      .then(data => {
-
-        console.log(data)
-        setToken(data.token)
-        setPlayer(data.data)
+      .then(res => {
+        setPlayer(res.data)
       })
       .catch(err => {
         setToken(null)
         setError(err.message)
-        console.log(err)
+        console.warn(err)
       }) 
 
     }
@@ -44,6 +41,8 @@ function APIProvider ({children}) {
     player: player,
     setPlayer: setPlayer,
     setToken: setToken,
+    error: error,
+    setError: setError,
   }
 
     return (

@@ -1,7 +1,7 @@
 import './App.css'
 import {APIProvider} from './context/ApiProvider'
 import NavBar from './components/NavBar'
-
+import TabSwitcher from './components/TabSwitcher'
 
 function App() {
 
@@ -9,15 +9,7 @@ function App() {
     <>
       <APIProvider>
         <NavBar />
-        <section>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-          }}> 
-    
-          </div>
-        </section>
+        <TabSwitcher />
       </APIProvider>
     </>
   )
